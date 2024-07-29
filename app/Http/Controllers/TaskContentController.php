@@ -45,7 +45,8 @@ class TaskContentController extends Controller
     public function getoneTaskContent($id)
     {
         try {
-            $taskcontentdataone = TaskContent::find($id)::with('getwithTaskFolder')->get();
+            $taskcontentdataone = TaskContent::find($id);
+            $taskcontentdataone->getonlyOneTaskcontent;
             if ($taskcontentdataone) {
                 return response()->json([
                     'message' => 'success',
@@ -61,10 +62,66 @@ class TaskContentController extends Controller
             }
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'server error',
+                'message' => $e->getMessage(),
                 'code' => 1,
                 'data' => []
             ]);
+        }
+    }
+
+    // update task content
+
+    public function updateTaskcontent(Request $request, $id)
+    {
+        try {
+            $updatedata = TaskContent::where('id', $id)->update($request->all());
+            if ($updatedata) {
+                return response()->json([
+                    'message' => 'update success',
+                    'data' => $updatedata,
+                    'code' => 0
+                ], 201);
+            } else {
+                return response()->json([
+                    'message' => 'update error',
+                    'data' => [],
+                    'code' => 1
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'data' => [],
+                'code' => 1
+            ], 500);
+        }
+    }
+
+    // delete task content
+
+    public function deleteTaskContent($id)
+    {
+        try {
+            $datadelete = TaskContent::where('id', $id)->delete();
+            if ($datadelete) {
+                return response()->json([
+                    'message' => 'delete success',
+                    'code' => 0,
+                    'data' => $datadelete
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'not found',
+                    'code' => 1,
+                    'data' => []
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'data' => [],
+                'code' => 1
+            ], 500);
         }
     }
 

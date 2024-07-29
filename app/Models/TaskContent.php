@@ -23,4 +23,8 @@ class TaskContent extends Model
     public function getwithTaskFolder(){
         return $this->hasMany(Task::class,'id','task_id');
     }
+
+    public function getonlyOneTaskcontent(){
+        return $this->belongsTo(Task::class,'task_id','id');
+    }
 }
