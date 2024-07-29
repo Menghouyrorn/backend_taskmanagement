@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+
+Route::prefix('v1')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/getcurrentuser', [AuthController::class, 'getCurrentuser']);
+
+        // create task folder and get
+
+        Route::post('/createtask', [TaskController::class, 'createTask']);
+        Route::get('/getalltask', [TaskController::class, 'getAllTask']);
+        Route::get('/gettask/{id}', [TaskController::class, 'getOneTask']);
+    });
 });
