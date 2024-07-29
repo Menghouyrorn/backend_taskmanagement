@@ -115,4 +115,24 @@ class AuthController extends Controller
             'data' => $currentuser
         ], 200);
     }
+
+    public function getTaskInUser($id){
+        try{
+            $data = Auth::find($id)::with('taskinuser')->get();
+
+            if($data){
+                return response()->json([
+                    'message'=>'success',
+                    'code'=>0,
+                    'data'=>$data
+                ],200);
+            }
+        }catch(\Exception $e){
+            return response()->json([
+                'message'=>$e->getMessage(),
+                'code'=>1,
+                'data'=>[]
+            ],500);
+        }
+    }
 }

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TaskContentController;
 use App\Http\Controllers\TaskController;
+use App\Models\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,5 +32,19 @@ Route::prefix('v1')->group(function () {
         Route::post('/createtask', [TaskController::class, 'createTask']);
         Route::get('/getalltask', [TaskController::class, 'getAllTask']);
         Route::get('/gettask/{id}', [TaskController::class, 'getOneTask']);
+
+        // create task content and get task content
+
+        Route::get('/getalltaskcontent', [TaskContentController::class, 'getallTaskContent']);
+        Route::get('/getonetaskcontent/{id}', [TaskContentController::class, 'getoneTaskContent']);
+        Route::post('/createtaskcontent', [TaskContentController::class, 'createTaskContent']);
+
+        //  find task content in task folder
+        Route::get('/taskcontentinfolder',[TaskController::class,'findTaskContent']);
+        
+        // get task in user id
+
+        Route::get('/getTaskInUser/{id}',[AuthController::class,'getTaskInUser']);
+    
     });
 });

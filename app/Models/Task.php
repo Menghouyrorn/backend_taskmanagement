@@ -19,6 +19,11 @@ class Task extends Model
 
     public function getwithuser()
     {
-        return $this->hasMany(Auth::class);
+        return $this->hasMany(Auth::class,'id','user_id');
     }
+
+    public function findtaskContent(){
+        return $this->hasMany(TaskContent::class);
+    }
+
 }

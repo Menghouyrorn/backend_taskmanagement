@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\task_content;
+use App\Models\TaskContent;
 use Illuminate\Http\Request;
 
 class TaskContentController extends Controller
@@ -18,7 +18,7 @@ class TaskContentController extends Controller
         ]);
 
         try {
-            $taskcontent = task_content::create($request->all());
+            $taskcontent = TaskContent::create($request->all());
 
             if ($taskcontent) {
                 return response()->json([
@@ -35,7 +35,7 @@ class TaskContentController extends Controller
             }
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'server error',
+                'message' => $e->getMessage(),
                 'code' => 1,
                 'data' => []
             ], 500);
@@ -45,7 +45,7 @@ class TaskContentController extends Controller
     public function getoneTaskContent($id)
     {
         try {
-            $taskcontentdataone = task_content::find($id);
+            $taskcontentdataone = TaskContent::find($id)::with('getwithTaskFolder')->get();
             if ($taskcontentdataone) {
                 return response()->json([
                     'message' => 'success',
@@ -72,7 +72,7 @@ class TaskContentController extends Controller
     public function getallTaskContent()
     {
         try {
-            $data = task_content::all();
+            $data = TaskContent::with('getwithTaskFolder')->get();
 
             return response()->json([
                 'message' => 'success',
@@ -81,7 +81,7 @@ class TaskContentController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'server error',
+                'message' => $e->getMessage(),
                 'data' => [],
                 'code' => 1
             ], 500);

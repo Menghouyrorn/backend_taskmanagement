@@ -45,7 +45,7 @@ class TaskController extends Controller
     public function getAllTask()
     {
         try {
-            $taskdata = Task::all();
+            $taskdata = Task::with('getwithuser')->get();
 
             return response()->json([
                 'message' => 'success',
@@ -54,7 +54,7 @@ class TaskController extends Controller
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'server error',
+                'message' => $e->getMessage(),
                 'code' => 1,
                 'data' => []
             ], 500);
@@ -64,7 +64,7 @@ class TaskController extends Controller
     public function getOneTask($id)
     {
         try {
-            $findtaskdata = Task::find($id);
+            $findtaskdata = Task::find($id)::with('getwithuser')->get();
             if ($findtaskdata) {
                 return response()->json([
                     'message' => 'success',
@@ -80,10 +80,31 @@ class TaskController extends Controller
             }
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'server error',
+                'message' => $e->getMessage(),
                 'code' => 1,
                 'data' => [],
             ], 500);
         }
     }
+
+    public function findTaskContent(){
+        try{
+            $data = Task::with('findtaskContent')->get();
+            
+            if($data){
+                return response()->json([
+                    'message'=>'success',
+                    'data'=>$data,
+                    'code'=>0
+                ],200);
+            }
+        }catch(\Exception $e){
+            return response()->json([
+                'message'=>$e->getMessage(),
+                'code'=>1,
+                'data'=>[]
+            ],500);
+        }
+    }
+
 }

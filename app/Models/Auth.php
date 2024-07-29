@@ -25,4 +25,9 @@ class Auth extends Model
         'password',
         'remember_token'
     ];
+
+    public function taskinuser()
+    {
+        return $this->hasMany(Task::class, 'user_id', 'id');
+    }
 }
