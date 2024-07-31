@@ -66,6 +66,7 @@ class TaskController extends Controller
         try {
             $findtaskdata = Task::find($id);
             $findtaskdata->getwithuser;
+            $findtaskdata->findtaskContent;
             if ($findtaskdata) {
                 return response()->json([
                     'message' => 'success',
