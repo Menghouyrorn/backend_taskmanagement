@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\TaskContent;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TaskContentController extends Controller
@@ -129,7 +131,7 @@ class TaskContentController extends Controller
     public function getallTaskContent()
     {
         try {
-            $data = TaskContent::with('getwithTaskFolder')->get();
+            $data = TaskContent::orderby('start_on','desc')->with('getwithTaskFolder')->get();
 
             return response()->json([
                 'message' => 'success',
@@ -142,6 +144,31 @@ class TaskContentController extends Controller
                 'data' => [],
                 'code' => 1
             ], 500);
+        }
+    }
+
+    public function gettaskcentbyDate()
+    {
+        try {
+
+            $data = TaskContent::whereDate("start_on", ">=", Carbon::now())
+                ->orderBy('start_on', 'asc')
+                ->get()
+                ->groupBy(function ($date) {
+                    return Carbon::parse($date->start_on)->format('d-M-Y');
+                });
+
+            return response()->json([
+                'message' => 'success',
+                'code' => 0,
+                'data' => $data
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'data' => [],
+                'code' => 1
+            ]);
         }
     }
 }

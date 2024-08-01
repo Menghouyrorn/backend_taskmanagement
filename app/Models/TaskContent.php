@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TaskContent extends Model
 {
@@ -19,6 +20,11 @@ class TaskContent extends Model
         'start_on',
         'end_on'
     ];
+
+    public function task(): BelongsTo
+    {
+        return $this->belongsTo(Task::class, 'task_id');
+    }
 
     public function getwithTaskFolder(){
         return $this->hasMany(Task::class,'id','task_id');

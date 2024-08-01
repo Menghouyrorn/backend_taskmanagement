@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskContentController;
+use App\Http\Controllers\ListDateController;
 use App\Http\Controllers\TaskController;
 use App\Models\Auth;
 use App\Models\TaskContent;
@@ -43,6 +44,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/createtaskcontent', [TaskContentController::class, 'createTaskContent']);
         Route::put('/updatetaskcontent/{id}', [TaskContentController::class, 'updateTaskcontent']);
         Route::delete('/deletetaskcontent/{id}', [TaskContentController::class, 'deleteTaskContent']);
+
+        Route::get('/gettaskcontentbydate',[TaskContentController::class,'gettaskcentbyDate']);
 
         //  find task content in task folder
         Route::get('/taskcontentinfolder', [TaskController::class, 'findTaskContent']);
