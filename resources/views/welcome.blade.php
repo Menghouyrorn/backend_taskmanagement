@@ -13,7 +13,7 @@
 @section('body')
 <div>
     <h1>
-        Hello Bro
+        Hello
     </h1>
 </div>
 
